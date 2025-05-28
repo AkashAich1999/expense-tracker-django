@@ -1,0 +1,47 @@
+{% extends "finance/base.html" %} 
+{% block title %}Login{% endblock title %} 
+{%block content %}
+    <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md w-full space-y-8 p-8 bg-white rounded-lx shadow-lg">
+            <div>
+                <h2 class="text-center text-3xl font-bold text-gray-900">Expense Tracker</h2>
+                <p class="text-center text-gray-600 mt-2 text-sm">Please Sign In to Your Account</p>
+            </div>
+
+            <form class="space-y-6" method="post">
+            {% csrf_token %}
+            <div class="space-y-5">
+                <div>
+                    <label class="block text-gray-700 font-medium text-sm" for="id_username">Username</label>
+                    <input type="text" name="username" id="id_username"
+                        class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-nonex focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                        placeholder="Enter Your Username" required />
+                </div>
+
+                <div>
+                    <label class="block text-gray-700 font-medium text-sm" for="id_password">Password</label>
+                    <input type="password" name="password" id="id_password"
+                        class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500 focus:ring-indigo-500 shadow-sm sm:text-sm"
+                        placeholder="Enter Your Password" required />
+                </div>
+            </div>    
+
+            <!-- Error Message -->
+            {% if form.non_field_errors %}
+                <div class="text-red-600 text-sm">
+                {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+               {% endfor %}
+                </div>
+            {% endif %}    
+
+            <!-- Submit Button -->
+            <div>
+                <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out">
+                    Sign In
+                </button>
+            </div>
+            </form>
+        </div>
+    </div>
+{% endblock content %}
