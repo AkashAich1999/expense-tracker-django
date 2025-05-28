@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 from finance.forms import RegisterForm
+from django.contrib.auth import login
 
 class RegisterView(View):
     def get(self, request, *args, **kwargs):
@@ -10,4 +11,6 @@ class RegisterView(View):
     def post(self, request, *args, **kwargs):
         form = RegisterForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save()
+            login(request, user)
+            redirect('')
