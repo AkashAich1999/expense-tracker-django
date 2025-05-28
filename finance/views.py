@@ -11,3 +11,8 @@ def Home(request):
 class HomeView(View):
     def get(self, request, *args, **kwargs):
         return HttpResponse("<h1>Hello Django Class !</h1>")
+    
+# Class Based View with Template.
+class HomeView(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'finance/home.html')
