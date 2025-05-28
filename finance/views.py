@@ -1,3 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponse
 
-# Create your views here.
+# Function Based View.
+def Home(request):
+    return HttpResponse("<h1>Hello Django</h1>")
