@@ -13,4 +13,5 @@ class RegisterView(View):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            redirect('')
+            return redirect('')
+        return render(request, 'finance/register.html', {'form': form}) # render(request, template, context)
