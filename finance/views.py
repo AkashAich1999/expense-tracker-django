@@ -3,6 +3,7 @@ from django.views import View
 from finance.forms import RegisterForm, TransactionForm
 from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
+from .models import Transaction
 
 class RegisterView(View):
     def get(self, request, *args, **kwargs):
@@ -34,3 +35,8 @@ class TransactionCreateView(LoginRequiredMixin, View):
             transaction.save()
             return redirect('dashboard')
         return render(request, 'finance/transaction_form.html', {'form':form})
+
+class TransactionListView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        transactions = Transaction.objects.all()
+        return render(request, 'finance/transaction_list.html', {'transactions':transactions})
