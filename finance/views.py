@@ -15,3 +15,7 @@ class RegisterView(View):
             login(request, user)
             return redirect('')
         return render(request, 'finance/register.html', {'form': form}) # render(request, template, context)
+    
+class DashboardView(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'finance/dashboard.html')    
