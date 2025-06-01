@@ -1,10 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from django.views import View
 from finance.forms import RegisterForm, TransactionForm, GoalForm
 from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Transaction, Goal
 from django.db.models import Sum
+from .admin import TransactionResource
 
 class RegisterView(View):
     def get(self, request, *args, **kwargs):
@@ -70,7 +71,7 @@ class TransactionCreateView(LoginRequiredMixin, View):
 
 class TransactionListView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        transactions = Transaction.objects.all()
+        transactions = Transaction.objects.filter(user = request.user)
         return render(request, 'finance/transaction_list.html', {'transactions':transactions})
     
 class GoalCreateView(LoginRequiredMixin, View):
@@ -85,4 +86,18 @@ class GoalCreateView(LoginRequiredMixin, View):
             goal.user = request.user
             goal.save()
             return redirect('dashboard')
-        return render(request, 'finance/goal_form.html', {'form':form})    
+        return render(request, 'finance/goal_form.html', {'form':form})
+
+def export_transactions(request):
+    user_transactions = Transaction.objects.filter(user = request.user)
+    transactions_resource = TransactionResource()
+    dataset = transactions_resource.export(queryset=user_transactions)
+
+    excel_data = dataset.export('xlsx')
+
+    # Create a HttpResponse with the correct MIME type for an Excel File.
+    response = HttpResponse(excel_data, content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')   
+
+    # Set the Header for Downloading the file.
+    response['Content-Disposition'] = 'attachment;filename=transactions_report.xlxs'
+    return response   
