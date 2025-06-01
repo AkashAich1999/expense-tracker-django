@@ -6,6 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Transaction, Goal
 from django.db.models import Sum
 from .admin import TransactionResource
+from django.contrib import messages
 
 class RegisterView(View):
     def get(self, request, *args, **kwargs):
@@ -17,6 +18,7 @@ class RegisterView(View):
         if form.is_valid():
             user = form.save()
             login(request, user)
+            messages.success(request, "Account Created Successfully !")
             return redirect('dashboard')
         return render(request, 'finance/register.html', {'form': form}) # render(request, template, context)
     
@@ -66,6 +68,7 @@ class TransactionCreateView(LoginRequiredMixin, View):
             transaction = form.save(commit=False)
             transaction.user = request.user
             transaction.save()
+            messages.success(request, "Transaction Added Successfully !")
             return redirect('dashboard')
         return render(request, 'finance/transaction_form.html', {'form':form})
 
@@ -85,6 +88,7 @@ class GoalCreateView(LoginRequiredMixin, View):
             goal = form.save(commit=False)
             goal.user = request.user
             goal.save()
+            messages.success(request, "Goal Created Successfully !")
             return redirect('dashboard')
         return render(request, 'finance/goal_form.html', {'form':form})
 

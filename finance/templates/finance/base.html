@@ -23,5 +23,26 @@
         {% endif %}
     </nav>    
     {% block content %}{% endblock content %}
+    {% if messages %}
+        <div id="message-container" class="fixed top-5 left-1/2 transform -translate-x-1/2 w-96">
+            {% for message in messages %}
+            <div class="bg-{{ message.tags }}-500 text-white text-center p-3 rounded shadow-md mb-2 bg-green-400">
+                Message: {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+    {% endif %}    
+
+    <script>
+        // Automatically Fade out Messages After 5 Seconds
+        setTimeout(function() {
+            let messageContainer = document.getElementById('message-container');
+            if (messageContainer) {
+                messageContainer.style.transition = "opacity 0.5s ease-out";
+                messageContainer.style.opacity = "0"
+                setTimeout(() => messageContainer.remove(), 500); // Remove from DOM
+            }
+        }, 5000);   // 5 seconds
+    </script>
 </body>
 </html>    
